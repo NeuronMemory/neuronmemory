@@ -1,0 +1,103 @@
+  NeuronMemory Documentation
+
+  Introduction
+
+
+  NeuronMemory is an advanced memory engine designed to be integrated with Large Language Models (LLMs) and AI agents. It provides a
+  sophisticated system for storing, retrieving, and managing different types of memories, enabling AI systems to have more human-like memory
+  capabilities.
+
+
+  The system is built around a core NeuronMemoryAPI that provides a simple interface for interacting with the memory system. Under the hood,
+  it uses a MemoryManager to orchestrate memory operations, a MemoryStore for persisting memories, and a RetrievalEngine for intelligent
+  search.
+
+  Core Concepts
+
+  Memory Types
+
+  NeuronMemory supports several types of memories, each designed to store different kinds of information:
+
+
+   * Semantic Memory: For facts and general knowledge.
+   * Episodic Memory: For personal experiences and events.
+   * Social Memory: For information about people and relationships.
+   * Procedural Memory: For instructions and "how-to" knowledge.
+   * Working Memory: For temporary information related to a current task.
+
+  Memory Lifecycle
+
+
+   1. Creation: Memories are created through the NeuronMemoryAPI. The system automatically analyzes the content to determine its importance and
+      extracts relevant entities.
+   2. Storage: Memories are stored in a MemoryStore, which uses ChromaDB as the default vector database. This allows for efficient semantic
+      search.
+   3. Retrieval: The RetrievalEngine provides intelligent search capabilities, allowing for retrieval based on semantic similarity, temporal
+      relevance, emotional context, and more.
+   4. Consolidation: The system periodically consolidates memories to extract patterns and build a more robust knowledge base.
+   5. Cleanup: Expired or unimportant memories are automatically cleaned up to manage the memory store's size.
+
+  How it Works
+
+  1. Initialization
+
+
+  The NeuronMemoryAPI is the main entry point to the system. When initialized, it sets up the MemoryManager, which in turn initializes the
+  MemoryStore and RetrievalEngine. The configuration is loaded from a .env file, which must contain Azure OpenAI credentials.
+
+  2. Creating Memories
+
+
+  The create_memory method of the NeuronMemoryAPI is used to create new memories. You can specify the memory_type and provide content. The
+  system will automatically:
+
+
+   * Analyze the importance of the memory.
+   * Extract entities (people, places, concepts).
+   * Detect the emotional content of the memory.
+   * Generate a vector embedding for semantic search.
+   * Store the memory in the appropriate collection in ChromaDB.
+
+  The API also provides helper methods for creating specific memory types, such as create_episodic_memory and create_social_memory.
+
+
+  3. Searching for Memories
+
+  The search_memories method allows you to search for memories using a natural language query. The RetrievalEngine uses a hybrid search
+  strategy that considers:
+
+
+   * Semantic Similarity: How closely the memory's content matches the query.
+   * Temporal Relevance: How recently the memory was created or accessed.
+   * Importance: The assigned importance score of the memory.
+   * Contextual Relevance: How well the memory matches the current session's context (user, task, domain).
+
+  4. LLM Integration
+
+
+  The get_context_for_llm method is designed to provide relevant memories to an LLM as context for a given query. This allows the LLM to
+  generate more informed and context-aware responses.
+
+  5. Session Management
+
+
+  NeuronMemory supports memory sessions, which allow you to group memories related to a specific task or interaction. This is useful for
+  maintaining context in a conversation with an AI agent.
+
+  Codebase Structure
+
+
+   * neuron_memory/api/neuron_memory_api.py: The main public interface for the NeuronMemory system.
+   * neuron_memory/core/memory_manager.py: Orchestrates all memory operations.
+   * neuron_memory/core/memory_store.py: Handles the storage and retrieval of memories using ChromaDB.
+   * neuron_memory/core/retrieval_engine.py: Implements the intelligent search and retrieval logic.
+   * neuron_memory/memory/memory_objects.py: Defines the different types of memory objects.
+   * neuron_memory/llm/azure_openai_client.py: Provides an interface to Azure OpenAI services for embeddings and LLM interactions.
+   * neuron_memory/config.py: Manages the configuration for the system.
+   * demo.py: A demonstration script that showcases the key features of the NeuronMemory system.
+   * setup.py: The setup script for the project.
+
+
+  This documentation provides a high-level overview of the NeuronMemory system. For more detailed information, please refer to the source
+  code and the inline documentation.
+
